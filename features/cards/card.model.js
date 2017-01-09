@@ -23,10 +23,10 @@ var Card = new Schema({
         },
         contactHistory: [ContactHistory],
         saleChannel: String,
-        attachment: {
+        attachments: [{
             type: Schema.Types.ObjectId,
             ref: 'Attachment'
-        },
+        }],
         member: {
             type: Schema.Types.ObjectId,
             ref: 'User'

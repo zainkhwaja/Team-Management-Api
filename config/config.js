@@ -7,11 +7,6 @@ module.exports = {
     accessTokenUrl: '',
     graphApiUrl: ''
   },
-  s3: {
-    accessKeyId: '',
-    secretAccessKey: '',
-    region: 'eu-west-1'
-  },
   mailgun: {
     'apiKey': '',
     'domain': ''
