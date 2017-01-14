@@ -1,15 +1,18 @@
 var log = require('tracer').console({format: "{{message}}  - {{file}}:{{line}}"}).log;
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var passportLocalMongoose = require('passport-local-mongoose');
-var ContactHistory = require('../../subDocument/checkList')
-var Comments = require('../../subDocument/comments')
-var CheckList = require('../../subDocument/checkList')
-var Result = require('../../subDocument/result')
-
+var ContactHistory = require('../../subDocument/checkList');
+var Comments = require('../../subDocument/comments');
+var CheckList = require('../../subDocument/checkList');
+var Result = require('../../subDocument/result');
+var List = require('../lists/list.model.js');
 
 var Card = new Schema({
 
+        board: {
+            type: Schema.Types.ObjectId,
+            ref: 'Board'
+        },
         list: {
             type: Schema.Types.ObjectId,
             ref: 'List'

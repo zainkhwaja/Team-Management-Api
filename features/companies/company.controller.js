@@ -21,7 +21,7 @@ exports.listAll = function (req, res, next) {
     });
 };
 
-exports.addCompany = function (res, req, next) {
+exports.addCompany = function (req, res, next) {
 
     Company.create(req.body, function (err, company) {
         if (err) {
@@ -31,7 +31,7 @@ exports.addCompany = function (res, req, next) {
                 data: err
             });
         }
-        return res.status(200).json({
+         res.status(200).json({
             message: 'Company add successfully',
             success: true,
             data: company
@@ -40,7 +40,7 @@ exports.addCompany = function (res, req, next) {
 
 };
 
-exports.deleteAllCompanys = function (res, req, next) {
+exports.deleteAllCompanys = function (req, res, next) {
 
     Company.remove({}, function (err, companies) {
         if (err) {
@@ -50,7 +50,7 @@ exports.deleteAllCompanys = function (res, req, next) {
                 data: err
             });
         }
-        return res.status(200).json({
+         res.status(200).json({
             message: 'Deleted all Companys',
             success: true,
             data: companies
@@ -70,7 +70,7 @@ exports.getCompany = function (req, res, next) {
                 data: err
             });
         }
-        return res.status(200).json({
+         res.status(200).json({
             message: 'Company got successfully',
             success: true,
             data: company
@@ -80,7 +80,7 @@ exports.getCompany = function (req, res, next) {
 
 };
 
-exports.deleteCompany = function (res, req, next) {
+exports.deleteCompany = function (req, res, next) {
 
     Company.findByIdAndRemove(req.param.id, function (err, company) {
         if (err) {
@@ -90,7 +90,7 @@ exports.deleteCompany = function (res, req, next) {
                 data: err
             });
         }
-        return res.status(200).json({
+         res.status(200).json({
             message: 'Company deleted successfully',
             success: true,
             data: company
@@ -98,7 +98,7 @@ exports.deleteCompany = function (res, req, next) {
     })
 };
 
-exports.editCompany = function () {
+exports.editCompany = function (req, res, next) {
 
     Company.findByIdAndUpdate(req.params.id, {
         $set: req.body
@@ -112,7 +112,7 @@ exports.editCompany = function () {
                 data: err
             });
         }
-        return res.status(200).json({
+         res.status(200).json({
             message: 'Company updated successfully',
             success: true,
             data: company

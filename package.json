@@ -25,6 +25,7 @@
     "passport-local-mongoose": "^4.0.0",
     "q": "^1.4.1",
     "serve-favicon": "~2.3.0",
-    "tracer": "^0.8.3"
+    "tracer": "^0.8.3",
+    "xregexp": "^3.1.1"
   }
 }

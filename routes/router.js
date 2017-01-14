@@ -17,7 +17,7 @@ module.exports = function (app, config, models) {
     router.use('/boards', boards);
     router.use('/cards', cards);
     router.use('/companies', companies);
-    router.use('/list', lists);
+    router.use('/lists', lists);
 
 
     app.use('/api', router);

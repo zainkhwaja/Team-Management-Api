@@ -4,6 +4,7 @@ var cardCtrl = require('./card.controller.js');
 var log = require('tracer').console({format: "{{message}}  - {{file}}:{{line}}"}).log;
 var verify = require('../../server/verify');
 
+
 router.route('/')
 
     //GET cards
