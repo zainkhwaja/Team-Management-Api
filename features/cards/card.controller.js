@@ -5,7 +5,7 @@ var log = require('tracer').console({format: "{{message}}  - {{file}}:{{line}}"}
 var auth = require('../../server/auth');
 var List = require('../lists/list.model');
 var Board = require('../boards/board.model');
-
+var Company = require('../companies/company.model');
 
 exports.listAll = function (req, res, next) {
     Card.find({})
@@ -29,8 +29,19 @@ exports.listAll = function (req, res, next) {
 
 exports.addCard = function (req, res, next) {
     log(req.body);
-    var card = new Card(req.body);
-    Board.find({}, function (err, boards) {
+
+    var temp = {
+        email: req.body.email,
+        name: req.body.name,
+        comapny: req.body.company,
+        number: req.body.number,
+        description: req.body.description,
+        board: req.body.board,
+        list: req.body.list
+    };
+    var card = new Card(temp);
+    log(card);
+    Board.findById(req.body.board, function (err, board) {
 
         if (err) {
             return res.status(500).json({
@@ -39,46 +50,15 @@ exports.addCard = function (req, res, next) {
                 data: err
             });
         }
-        for (var board in boards) {
-            if (boards[board]._id = req.body.board) {
-                card.board = boards[board]._id;
-
-            }
-
-        }
-
-        List.find({}, function (err, lists) {
-
-                if (err) {
-                    return res.status(500).json({
-                        message: 'Something went wrong while adding card',
-                        success: false,
-                        data: err
-                    });
-                }
-                for (var list in lists) {
-                    if (lists[list]._id = req.body.list) {
-                        log("---List found ----")
-                        card.list = lists[list]._id;
-
-                    }
-
-                }
-
-                log(card);
-                card.save();
-                return res.status(200).json({
-                    message: 'Card added succesfully',
-                    success: true,
-                    data: card
-                });
-            }
-        );
-
-
+        board.cards.push(card._id);
+        board.save();
+        card.save();
+        return res.status(200).json({
+            message: 'Card added succesfully',
+            success: true,
+            data: card
+        });
     });
-
-    // card.save();
 
 
 };
@@ -146,24 +126,65 @@ exports.deleteCard = function (req, res, next) {
 
 exports.editCard = function (req, res, next) {
 
-    Card.findByIdAndUpdate(req.params.id, {
-        $set: req.body
-    }, {
-        new: true
-    }, function (err, card) {
+    log(req.body);
+
+    Company.find({}, function (err, companies) {
+        var flag = false;
         if (err) {
             return res.status(500).json({
-                message: 'Something went wrong while updating Card',
+                message: 'Something went wrong while deleting Card ',
                 success: false,
                 data: err
             });
         }
-        return res.status(200).json({
-            message: 'Card updated successfully',
-            success: true,
-            data: card
-        });
-    })
+        if (req.body.company._id) {
+            for (var company in companies) {
+                if (companies[company]._id == req.body.comapny._id) {
+                    flag = true;
+                }
+
+            }
+        }
+
+
+        if (!flag) {
+
+            var company = {
+                name: req.body.company.name
+            };
+
+            var newCompany = new Company(company);
+            log(newCompany);
+            newCompany.save();
+            req.body.company = newCompany._doc._id ;
+
+
+        }
+
+        log(req.body);
+
+
+        Card.findByIdAndUpdate(req.params.id, {
+            $set: req.body
+        }, {
+            new: true
+        }, function (err, card) {
+            if (err) {
+                return res.status(500).json({
+                    message: 'Something went wrong while updating Card',
+                    success: false,
+                    data: err
+                });
+            }
+            return res.status(200).json({
+                message: 'Card updated successfully',
+                success: true,
+                data: card
+            });
+        })
+
+    });
+
 
 };
 

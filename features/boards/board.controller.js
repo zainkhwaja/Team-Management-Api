@@ -7,17 +7,16 @@ var auth = require('../../server/auth');
 var mongoose = require('mongoose');
 var Card = require('../cards/card.model');
 
-
-
 // Routes for /
 
 exports.listAll = function (req, res, next) {
     Board.find({})
         .populate('lists')
-        .populate('cards')
+        .deepPopulate('cards')
         .exec(
             function (err, boards) {
                 if (err) {
+                    
                     return res.status(500).json({
                         success: false,
                         message: 'Something went wrong. Please try again.',
@@ -119,8 +118,9 @@ exports.deleteAllBoards = function (req, res, next) {
 // functions for /:id
 
 exports.getBoard = function (req, res, next) {
-
-    Board.findById(req.param.id, function (err, board) {
+log(req.params.id);
+    var id =  new mongoose.Types.ObjectId(req.params.id);
+    Board.findById(id, function (err, board) {
         if (err) {
             return res.status(500).json({
                 message: 'Something went wrong while getting board',
@@ -128,6 +128,7 @@ exports.getBoard = function (req, res, next) {
                 data: err
             });
         }
+        log(board);
         res.status(200).json({
             message: 'Board got successfully',
             success: true,

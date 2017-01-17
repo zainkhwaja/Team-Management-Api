@@ -20,7 +20,6 @@ var Company = new Schema({
             mobile: String,
             twitter: String,
             linkedIn: String
-
         },
         financialDetail: {
             companyTitle: String,

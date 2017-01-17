@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var passportLocalMongoose = require('passport-local-mongoose');
 var List = require('../lists/list.model.js');
-
+var deepPopulate = require('mongoose-deep-populate')(mongoose);
 
 var Board = new Schema({
 
@@ -22,5 +22,5 @@ var Board = new Schema({
         timestamps: true
     }
 );
-
+Board.plugin(deepPopulate);
 module.exports = mongoose.model('Board', Board);
