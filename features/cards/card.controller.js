@@ -85,7 +85,7 @@ exports.deleteAllCards = function (req, res, next) {
 
 exports.getCard = function (req, res, next) {
 
-    Card.findById(req.param.id)
+    Card.findById(req.params.id)
         .populate('list')
         .populate('board')
         .exec(function (err, card) {
@@ -108,7 +108,28 @@ exports.getCard = function (req, res, next) {
 
 exports.deleteCard = function (req, res, next) {
 
-    Card.findByIdAndRemove(req.param.id, function (err, card) {
+    log(req.params);
+    Board.findById(req.params.bid, function (err, board) {
+        if (err) {
+            return res.status(500).json({
+                message: 'Something went wrong while deleting Card ',
+                success: false,
+                data: err
+            });
+        }
+
+        log(board);
+
+        for (var card in board.cards) {
+            if (board.cards[card] == req.param.id) {
+                board.cards.splice(board.cards.indexOf(board.cards[card], 1))
+                break;
+            }
+
+        }
+    });
+
+    Card.findByIdAndRemove(req.params.cid, function (err, card) {
         if (err) {
             return res.status(500).json({
                 message: 'Something went wrong while deleting Card ',
@@ -137,17 +158,18 @@ exports.editCard = function (req, res, next) {
                 data: err
             });
         }
-        if (req.body.company._id) {
-            for (var company in companies) {
-                if (companies[company]._id == req.body.comapny._id) {
-                    flag = true;
+        if (req.body.company)
+            if (req.body.company._id) {
+                for (var company in companies) {
+                    if (companies[company]._id == req.body.comapny._id) {
+                        flag = true;
+                    }
+
                 }
-
             }
-        }
 
 
-        if (!flag) {
+        if (!flag && req.body.company) {
 
             var company = {
                 name: req.body.company.name
@@ -156,8 +178,7 @@ exports.editCard = function (req, res, next) {
             var newCompany = new Company(company);
             log(newCompany);
             newCompany.save();
-            req.body.company = newCompany._doc._id ;
-
+            req.body.company = newCompany._doc._id;
 
         }
 

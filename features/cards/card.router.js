@@ -24,7 +24,9 @@ router.route('/:id')
     .get(verify.user, cardCtrl.getCard)
 
     // PUT Card
-    .put(verify.user, cardCtrl.editCard)
+    .put(verify.user, cardCtrl.editCard);
+
+router.route('/:cid/board/:bid')
 
     // DELETE Card
     .delete(verify.user, cardCtrl.deleteCard);

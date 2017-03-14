@@ -7,6 +7,8 @@ var verify = require('../../server/verify');
 //GET attachments
 router.get('/', verify.user, attachmentCtrl.listAll);
 
+// ADD attachment
+router.post('/:cid',verify.user,attachmentCtrl.addAttachment);
 
 
 module.exports = router;
